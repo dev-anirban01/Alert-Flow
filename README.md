@@ -1,59 +1,142 @@
-# Alertflow
+# 🚨 AlertFlow
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 22.3.0.
+**AlertFlow** is a modern, responsive **Alert Operations & Incident Management Console** built with Angular. It provides real-time visibility, filtering, lifecycle tracking, and resolution workflows for alerts across distributed services (e.g., `tracking-svc`, `billing-svc`, `auth-svc`).
 
-## Development server
+---
 
-To start a local development server, run:
+## 📸 Key Features
 
-```bash
-ng serve
+- **Alert Console Dashboard**: Real-time aggregation of alerts categorized by severity (`LOW`, `MEDIUM`, `HIGH`, `CRITICAL`) and lifecycle status (`OPEN`, `ESCALATED`, `AUTO_CLOSED`, `RESOLVED`).
+- **Advanced Filtering & Search**: Multi-dimensional filtering by service source, severity, and resolution state with instant search capability.
+- **Incident Inspection & Details**: Drawer / detail panel to inspect incident metadata, descriptions, timestamps, and service ownership.
+- **Audit & State Timeline**: Full event history tracking state transitions and resolution notes.
+- **Incident Resolution**: Fast resolution action workflow with audit note logging.
+- **Modern UI / Responsive Design**: Clean SaaS interface powered by SCSS custom components, FontAwesome icons, and accessible layouts.
+
+---
+
+## 🛠️ Tech Stack
+
+- **Framework**: [Angular 22](https://angular.dev/) (Standalone components architecture)
+- **Styling**: SCSS (CSS variables, responsive design, custom design system)
+- **Icons**: [@fortawesome/fontawesome-free](https://fontawesome.com/)
+- **State & Reactive Streams**: [RxJS](https://rxjs.dev/)
+- **Testing**: [Vitest](https://vitest.dev/)
+- **Deployment**: [Vercel](https://vercel.com/) / Static SPA hosting
+
+---
+
+## 📁 Project Structure
+
+```text
+src/
+├── app/
+│   ├── core/                      # Core singletons, services, layout components
+│   │   ├── layout/                # Main layout shell, sidebar, headers
+│   │   ├── models/                # Global core models
+│   │   └── services/              # Core application services
+│   ├── features/                  # Domain-driven feature modules
+│   │   └── alerts/                # Alert operations feature
+│   │       ├── components/        # Alert table, filters, detail drawer, timeline
+│   │       │   ├── alert-details/
+│   │       │   ├── alert-filters/
+│   │       │   ├── alert-table/
+│   │       │   └── alert-timeline/
+│   │       ├── data/              # Mock dataset & seed data
+│   │       ├── models/            # Alert models, types, and interfaces
+│   │       ├── pages/             # Alert console page view
+│   │       │   └── alert-console/
+│   │       └── services/          # Alert data service & state management
+│   └── shared/                    # Reusable dumb components, directives, pipes
+│       ├── components/            # Badges, search inputs, buttons
+│       ├── directives/
+│       └── pipes/
+├── public/                        # Static assets
+└── styles.scss                    # Global style definitions and theme tokens
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+---
 
-## Code scaffolding
+## 🚀 Getting Started Locally
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+### Prerequisites
 
-```bash
-ng generate component component-name
-```
+Ensure you have the following installed on your machine:
+- **Node.js**: `v20.x` or `v22.x` (LTS recommended)
+- **npm**: `v10.x` or higher
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
+### 1. Clone the repository
 
 ```bash
-ng build
+git clone https://github.com/dev-anirban01/Alert-Flow.git
+cd Alert-Flow
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
+### 2. Install dependencies
 
 ```bash
-ng test
+npm install
 ```
 
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
+### 3. Start the local development server
 
 ```bash
-ng e2e
+npm start
+# or: npx ng serve
 ```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+Navigate to **`http://localhost:4200/`** in your browser. The application will hot-reload automatically on code changes.
 
-## Additional Resources
+---
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+## 🧪 Testing & Quality Checks
+
+### Run Unit Tests
+```bash
+npm test
+```
+Tests are powered by [Vitest](https://vitest.dev/) for fast feedback.
+
+### Format Code
+```bash
+npx prettier --write .
+```
+
+---
+
+## 🏗️ Production Build
+
+To compile a production-ready static bundle:
+
+```bash
+npm run build
+```
+
+The output artifacts will be created in `dist/alertflow/browser/`.
+
+---
+
+## 🌐 Deployment (Vercel)
+
+The repository is pre-configured with `vercel.json` for single-page application (SPA) routing.
+
+### Deploy using Vercel CLI:
+```bash
+# 1. Login to Vercel (one-time)
+npx vercel login
+
+# 2. Deploy to production
+npx vercel --prod
+```
+
+### Or Deploy using Git (CI/CD):
+1. Push your code to GitHub: `git push origin main`.
+2. Connect the repository in the [Vercel Dashboard](https://vercel.com/new).
+3. Set the build output directory to: `dist/alertflow/browser`.
+4. Every push to `main` will automatically build and deploy!
+
+---
+
+## 📝 License
+
+This project is open-source and available under the [MIT License](LICENSE).
