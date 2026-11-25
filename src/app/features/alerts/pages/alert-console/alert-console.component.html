@@ -1,0 +1,462 @@
+<div class="alert-console">
+  <!-- PAGE HEADER -->
+  <header class="page-heading">
+    <div>
+      <h1>Alert Console</h1>
+      <p>Monitor, filter and manage system alerts.</p>
+    </div>
+
+    <div class="live-status">
+      <span></span>
+      Live monitoring
+    </div>
+  </header>
+
+  <!-- SUMMARY CARDS -->
+  <section class="summary-grid">
+    <article class="summary-card">
+      <div class="summary-top">
+        <span>Total alerts</span>
+        <span class="summary-icon total-icon">
+          <i class="fa-solid fa-layer-group" aria-hidden="true"></i>
+        </span>
+      </div>
+      <strong>{{ totalCount() }}</strong>
+      <small>All recorded alerts</small>
+    </article>
+
+    <article class="summary-card">
+      <div class="summary-top">
+        <span>Open</span>
+        <span class="summary-icon status-open">
+          <i class="fa-solid fa-circle-exclamation" aria-hidden="true"></i>
+        </span>
+      </div>
+      <strong>{{ openCount() }}</strong>
+      <small>Waiting for action</small>
+    </article>
+
+    <article class="summary-card">
+      <div class="summary-top">
+        <span>Escalated</span>
+        <span class="summary-icon status-escalated">
+          <i class="fa-solid fa-arrow-up" aria-hidden="true"></i>
+        </span>
+      </div>
+      <strong>{{ escalatedCount() }}</strong>
+      <small>Require attention</small>
+    </article>
+
+    <article class="summary-card">
+      <div class="summary-top">
+        <span>Resolved</span>
+        <span class="summary-icon status-resolved">
+          <i class="fa-solid fa-circle-check" aria-hidden="true"></i>
+        </span>
+      </div>
+      <strong>{{ resolvedCount() }}</strong>
+      <small>Closed alerts</small>
+    </article>
+  </section>
+
+  <!-- MAIN WORKSPACE -->
+  <main class="workspace">
+    <!-- ALERT LIST -->
+    <section class="list-panel">
+      <div class="panel-heading">
+        <div>
+          <h2>Alerts</h2>
+          <p>Choose an alert to view its details.</p>
+        </div>
+
+        <span class="result-count"> {{ filteredAlerts().length }} of {{ totalCount() }} </span>
+      </div>
+
+      <!-- FILTERS -->
+      <div class="filters">
+        <label class="search-box">
+          <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+
+          <input
+            type="search"
+            placeholder="Search alerts..."
+            [value]="searchTerm()"
+            (input)="updateSearch($any($event.target).value)"
+          />
+        </label>
+
+        <select
+          aria-label="Filter by status"
+          [value]="selectedStatus()"
+          (change)="updateStatus($any($event.target).value)"
+        >
+          <option value="">All statuses</option>
+
+          @for (status of statuses; track status) {
+            <option [value]="status">{{ status }}</option>
+          }
+        </select>
+
+        <select
+          aria-label="Filter by severity"
+          [value]="selectedSeverity()"
+          (change)="updateSeverity($any($event.target).value)"
+        >
+          <option value="">All severities</option>
+
+          @for (severity of severities; track severity) {
+            <option [value]="severity">{{ severity }}</option>
+          }
+        </select>
+
+        <select
+          aria-label="Filter by source"
+          [value]="selectedSource()"
+          (change)="updateSource($any($event.target).value)"
+        >
+          <option value="">All sources</option>
+
+          @for (source of sources; track source) {
+            <option [value]="source">{{ source }}</option>
+          }
+        </select>
+
+        <button
+          type="button"
+          class="clear-button"
+          [disabled]="!hasFilters()"
+          (click)="clearFilters()"
+        >
+          <i class="fa-solid fa-rotate-left" aria-hidden="true"></i>
+          Clear
+        </button>
+      </div>
+
+      <!-- TABLE -->
+      <div class="table-scroll">
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>SOURCE</th>
+              <th>SEVERITY</th>
+              <th>STATUS</th>
+              <th>CREATED AT</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            @for (alert of pageAlerts(); track alert.id) {
+              <tr
+                tabindex="0"
+                role="button"
+                [class.selected]="selectedAlert()?.id === alert.id"
+                [attr.aria-label]="'View alert ' + alert.id"
+                (click)="selectAlert(alert.id)"
+                (keydown.enter)="selectAlert(alert.id)"
+                (keydown.space)="selectAlert(alert.id); $event.preventDefault()"
+              >
+                <td class="id-cell">
+                  {{ alert.id }}
+                </td>
+
+                <td class="source-cell">
+                  {{ alert.source }}
+                </td>
+
+                <!-- SEVERITY -->
+                <td>
+                  <span
+                    class="severity-badge"
+                    [class.severity-critical]="alert.severity === 'CRITICAL'"
+                    [class.severity-high]="alert.severity === 'HIGH'"
+                    [class.severity-medium]="alert.severity === 'MEDIUM'"
+                    [class.severity-low]="alert.severity === 'LOW'"
+                  >
+                    {{ alert.severity }}
+                  </span>
+                </td>
+
+                <!-- STATUS -->
+                <td>
+                  <span
+                    class="status-badge"
+                    [class.status-open]="alert.status === 'OPEN'"
+                    [class.status-escalated]="alert.status === 'ESCALATED'"
+                    [class.status-resolved]="alert.status === 'RESOLVED'"
+                    [class.status-auto-closed]="alert.status === 'AUTO_CLOSED'"
+                  >
+                    @if (alert.status === 'OPEN') {
+                      <i class="fa-solid fa-circle-exclamation" aria-hidden="true"></i>
+                    } @else if (alert.status === 'ESCALATED') {
+                      <i class="fa-solid fa-arrow-up" aria-hidden="true"></i>
+                    } @else if (alert.status === 'RESOLVED') {
+                      <i class="fa-solid fa-circle-check" aria-hidden="true"></i>
+                    } @else {
+                      <i class="fa-solid fa-circle-minus" aria-hidden="true"></i>
+                    }
+
+                    {{ alert.status.replace('_', ' ') }}
+                  </span>
+                </td>
+
+                <td class="date-cell">
+                  {{ alert.createdAt | date: 'dd MMM, HH:mm' }}
+                </td>
+              </tr>
+            } @empty {
+              <tr>
+                <td colspan="5">
+                  <div class="empty-state">
+                    <span class="empty-icon">
+                      <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+                    </span>
+
+                    <strong>No alerts found</strong>
+                    <p>Try changing your filters.</p>
+
+                    <button type="button" (click)="clearFilters()">Clear filters</button>
+                  </div>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+
+      <!-- PAGINATION -->
+      <footer class="pagination">
+        <span>
+          Showing
+          <strong>{{ firstResult() }}–{{ lastResult() }}</strong>
+          of
+          <strong>{{ filteredAlerts().length }}</strong>
+        </span>
+
+        <div class="page-controls">
+          <button
+            type="button"
+            aria-label="Previous page"
+            [disabled]="currentPage() === 1"
+            (click)="previousPage()"
+          >
+            <i class="fa-solid fa-chevron-left" aria-hidden="true"></i>
+          </button>
+
+          @for (page of pageNumbers(); track page) {
+            <button
+              type="button"
+              [class.active]="currentPage() === page"
+              [attr.aria-current]="currentPage() === page ? 'page' : null"
+              (click)="goToPage(page)"
+            >
+              {{ page }}
+            </button>
+          }
+
+          <button
+            type="button"
+            aria-label="Next page"
+            [disabled]="currentPage() === totalPages()"
+            (click)="nextPage()"
+          >
+            <i class="fa-solid fa-chevron-right" aria-hidden="true"></i>
+          </button>
+        </div>
+      </footer>
+    </section>
+
+    <!-- DETAIL PANEL -->
+    @if (selectedAlert(); as alert) {
+      <aside class="detail-panel" [class.mobile-open]="isDetailsOpen()">
+        <header class="detail-heading">
+          <div>
+            <span class="eyebrow">SELECTED ALERT</span>
+            <h2>{{ alert.id }} <span>— detail</span></h2>
+          </div>
+
+          <button
+            type="button"
+            class="close-button"
+            aria-label="Close details"
+            (click)="closeDetails()"
+          >
+            <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+          </button>
+        </header>
+
+        <div class="detail-content">
+          <!-- ALERT INFORMATION -->
+          <div class="detail-meta">
+            <div>
+              <span>Source</span>
+              <strong>{{ alert.source }}</strong>
+            </div>
+
+            <div>
+              <span>Severity</span>
+              <strong
+                [class.severity-critical-text]="alert.severity === 'CRITICAL'"
+                [class.severity-high-text]="alert.severity === 'HIGH'"
+                [class.severity-medium-text]="alert.severity === 'MEDIUM'"
+                [class.severity-low-text]="alert.severity === 'LOW'"
+              >
+                {{ alert.severity }}
+              </strong>
+            </div>
+
+            <div>
+              <span>Created</span>
+              <strong>
+                {{ alert.createdAt | date: 'dd MMM yyyy, HH:mm' }}
+              </strong>
+            </div>
+
+            <div>
+              <span>Current status</span>
+
+              <strong>
+                <span
+                  class="status-badge detail-status-badge"
+                  [class.status-open]="alert.status === 'OPEN'"
+                  [class.status-escalated]="alert.status === 'ESCALATED'"
+                  [class.status-resolved]="alert.status === 'RESOLVED'"
+                  [class.status-auto-closed]="alert.status === 'AUTO_CLOSED'"
+                >
+                  @if (alert.status === 'OPEN') {
+                    <i class="fa-solid fa-circle-exclamation" aria-hidden="true"></i>
+                  } @else if (alert.status === 'ESCALATED') {
+                    <i class="fa-solid fa-arrow-up" aria-hidden="true"></i>
+                  } @else if (alert.status === 'RESOLVED') {
+                    <i class="fa-solid fa-circle-check" aria-hidden="true"></i>
+                  } @else {
+                    <i class="fa-solid fa-circle-minus" aria-hidden="true"></i>
+                  }
+
+                  {{ alert.status.replace('_', ' ') }}
+                </span>
+              </strong>
+            </div>
+          </div>
+
+          <!-- ALERT TIMELINE -->
+          <section class="timeline-section">
+            <h3>Alert History</h3>
+
+            <div class="timeline">
+              @for (entry of alert.history; track $index; let last = $last) {
+                <div class="timeline-item">
+                  <div class="timeline-indicator">
+                    @if (entry.state === 'OPEN') {
+                      <span class="timeline-icon status-open">
+                        <i class="fa-solid fa-circle-exclamation" aria-hidden="true"></i>
+                      </span>
+                    } @else if (entry.state === 'ESCALATED') {
+                      <span class="timeline-icon status-escalated">
+                        <i class="fa-solid fa-arrow-up" aria-hidden="true"></i>
+                      </span>
+                    } @else if (entry.state === 'RESOLVED') {
+                      <span class="timeline-icon status-resolved">
+                        <i class="fa-solid fa-circle-check" aria-hidden="true"></i>
+                      </span>
+                    } @else {
+                      <span class="timeline-icon status-auto-closed">
+                        <i class="fa-solid fa-circle-minus" aria-hidden="true"></i>
+                      </span>
+                    }
+
+                    @if (!last) {
+                      <span class="timeline-line"></span>
+                    }
+                  </div>
+
+                  <div class="timeline-content">
+                    <div class="timeline-title">
+                      <strong>{{ entry.state.replace('_', ' ') }}</strong>
+
+                      <time>
+                        {{ entry.ts | date: 'dd MMM, HH:mm' }}
+                      </time>
+                    </div>
+
+                    @if (entry.note || entry.description) {
+                      <p>{{ entry.note || entry.description }}</p>
+                    }
+                  </div>
+                </div>
+              }
+            </div>
+          </section>
+
+          <!-- RESOLVE ALERT -->
+          @if (canResolve()) {
+            <section class="resolve-section">
+              <h3>
+                Resolution note
+                <span>(required)</span>
+              </h3>
+
+              <form (submit)="$event.preventDefault(); resolveAlert()">
+                <textarea
+                  rows="2"
+                  placeholder="Enter resolution note..."
+                  [value]="resolveNote()"
+                  [disabled]="isSaving()"
+                  (input)="updateNote($any($event.target).value)"
+                ></textarea>
+
+                @if (errorMessage()) {
+                  <p class="inline-error" role="alert">
+                    <i class="fa-solid fa-circle-exclamation" aria-hidden="true"></i>
+                    {{ errorMessage() }}
+                  </p>
+                }
+
+                <button class="resolve-button" type="submit" [disabled]="isSaving()">
+                  @if (isSaving()) {
+                    <span class="spinner"></span>
+                    Saving...
+                  } @else {
+                    <i class="fa-solid fa-check" aria-hidden="true"></i>
+                    Resolve alert
+                  }
+                </button>
+              </form>
+            </section>
+          } @else {
+            <div class="already-closed">
+              <i class="fa-solid fa-circle-check" aria-hidden="true"></i>
+              This alert is {{ alert.status.toLowerCase().replace('_', ' ') }}.
+            </div>
+          }
+
+          @if (successMessage()) {
+            <p class="inline-success" role="status">
+              <i class="fa-solid fa-circle-check" aria-hidden="true"></i>
+              {{ successMessage() }}
+            </p>
+          }
+        </div>
+      </aside>
+    } @else {
+      <aside class="detail-panel detail-empty">
+        <span class="empty-detail-icon">
+          <i class="fa-regular fa-rectangle-list" aria-hidden="true"></i>
+        </span>
+
+        <strong>Select an alert</strong>
+        <p>Choose an alert from the table to see its timeline.</p>
+      </aside>
+    }
+  </main>
+
+  <!-- DRAWER BACKDROP -->
+  @if (isDetailsOpen()) {
+    <button
+      type="button"
+      class="detail-backdrop"
+      aria-label="Close details"
+      (click)="closeDetails()"
+    ></button>
+  }
+</div>

@@ -1,0 +1,84 @@
+@if (isOpen()) {
+  <button
+    class="sidebar-backdrop"
+    type="button"
+    aria-label="Close navigation"
+    (click)="closeSidebar.emit()"
+  ></button>
+}
+
+<aside class="sidebar" [class.sidebar-open]="isOpen()" aria-label="Main navigation">
+  <!-- Brand -->
+  <div class="sidebar-brand">
+    <div class="brand-icon">
+      <i class="fa-solid fa-bell" aria-hidden="true"></i>
+    </div>
+
+    <div class="brand-info">
+      <h2>AlertFlow</h2>
+      <span>Operations Console</span>
+    </div>
+
+    <button
+      class="mobile-close"
+      type="button"
+      aria-label="Close menu"
+      (click)="closeSidebar.emit()"
+    >
+      <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+    </button>
+  </div>
+
+  <div class="brand-divider"></div>
+
+  <!-- Navigation -->
+  <nav class="sidebar-navigation">
+    <span class="nav-section-label">WORKSPACE</span>
+
+    <a
+      routerLink="/dashboard"
+      routerLinkActive="active"
+      [routerLinkActiveOptions]="{ exact: true }"
+      class="nav-item"
+      (click)="closeSidebar.emit()"
+    >
+      <i class="fa-solid fa-house nav-icon" aria-hidden="true"></i>
+      <span>Dashboard</span>
+    </a>
+
+    <a
+      routerLink="/alerts"
+      routerLinkActive="active"
+      class="nav-item"
+      (click)="closeSidebar.emit()"
+    >
+      <i class="fa-solid fa-bell nav-icon" aria-hidden="true"></i>
+      <span>Alert Console</span>
+      <span class="nav-count">60</span>
+    </a>
+
+    <div class="nav-divider"></div>
+
+    <span class="nav-section-label">PREFERENCES</span>
+
+    <a
+      routerLink="/settings"
+      routerLinkActive="active"
+      class="nav-item"
+      (click)="closeSidebar.emit()"
+    >
+      <i class="fa-solid fa-gear nav-icon" aria-hidden="true"></i>
+      <span>Settings</span>
+    </a>
+  </nav>
+
+  <!-- User Profile -->
+  <div class="sidebar-footer">
+    <div class="profile-avatar">AR</div>
+
+    <div class="profile-info">
+      <h4>Admin User</h4>
+      <span>Administrator</span>
+    </div>
+  </div>
+</aside>

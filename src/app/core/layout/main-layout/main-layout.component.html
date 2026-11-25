@@ -1,0 +1,11 @@
+<div class="main-layout-container">
+  <app-header (menuClick)="isSidebarOpen.set(true)"> </app-header>
+
+  <div class="main-layout-body">
+    <app-sidebar [isOpen]="isSidebarOpen()" (closeSidebar)="closeSidebar()"> </app-sidebar>
+
+    <main class="main-content">
+      <router-outlet></router-outlet>
+    </main>
+  </div>
+</div>

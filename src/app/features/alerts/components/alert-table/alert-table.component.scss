@@ -1,0 +1,40 @@
+.alert-table-container {
+  overflow-x: auto;
+  background-color: #ffffff;
+  border-radius: 0.5rem;
+  border: 1px solid #e2e8f0;
+}
+
+.alert-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 0.875rem;
+
+  th {
+    background-color: #f8fafc;
+    color: #475569;
+    font-weight: 600;
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid #e2e8f0;
+  }
+
+  td {
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid #f1f5f9;
+    color: #1e293b;
+  }
+
+  tr:hover {
+    background-color: #f8fafc;
+    cursor: pointer;
+  }
+
+  tr.selected {
+    background-color: #eff6ff;
+  }
+}
+
+.font-mono {
+  font-family: monospace;
+}

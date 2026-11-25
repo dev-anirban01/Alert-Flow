@@ -1,0 +1,50 @@
+
+<header class="app-header">
+
+  <div class="header-left">
+
+    <button
+      class="menu-button"
+      type="button"
+      aria-label="Open navigation menu"
+      (click)="menuClick.emit()">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+
+    <div class="breadcrumb">
+      <span class="breadcrumb-muted">Workspace</span>
+      <span class="breadcrumb-divider">/</span>
+      <span class="breadcrumb-current">Alert Console</span>
+    </div>
+
+  </div>
+
+  <div class="header-right">
+
+    <div class="system-status">
+      <span class="status-dot"></span>
+      <span>All systems operational</span>
+    </div>
+
+    <button
+      class="notification-button"
+      type="button"
+      aria-label="Notifications">
+      <span class="notification-icon">♧</span>
+      <span class="notification-indicator"></span>
+    </button>
+
+    <div class="header-profile">
+      <div class="profile-avatar">AR</div>
+
+      <div class="profile-details">
+        <strong>Admin User</strong>
+        <span>Administrator</span>
+      </div>
+    </div>
+
+  </div>
+
+</header>

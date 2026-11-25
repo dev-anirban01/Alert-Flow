@@ -1,0 +1,40 @@
+
+<section class="timeline-section">
+  <h3>Alert Timeline</h3>
+
+  <div class="timeline">
+    @for (item of alert().history; track item.id ?? item.ts) {
+      <div class="timeline-item">
+        <div class="timeline-indicator">
+          <span
+            class="timeline-dot"
+            [class.dot-open]="item.state === 'OPEN'"
+            [class.dot-escalated]="item.state === 'ESCALATED'"
+            [class.dot-auto-closed]="item.state === 'AUTO_CLOSED'"
+            [class.dot-resolved]="item.state === 'RESOLVED'">
+          </span>
+
+          @if (!$last) {
+            <span class="timeline-line"></span>
+          }
+        </div>
+
+        <div class="timeline-content">
+          <strong>{{ item.state }}</strong>
+
+          <span class="timeline-time">
+            {{ item.ts | date:'dd MMM yyyy, hh:mm a' }}
+          </span>
+
+          @if (item.note || item.description) {
+            <p>{{ item.note || item.description }}</p>
+          }
+
+          @if (item.performedBy) {
+            <small>By {{ item.performedBy }}</small>
+          }
+        </div>
+      </div>
+    }
+  </div>
+</section>

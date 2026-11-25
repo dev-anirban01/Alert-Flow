@@ -1,0 +1,190 @@
+
+.timeline-section {
+  margin-top: 18px;
+
+  h3 {
+    margin-bottom: 18px;
+    color: #172033;
+    font-size: 14px;
+    font-weight: 700;
+  }
+}
+
+.timeline {
+  display: flex;
+  flex-direction: column;
+}
+
+.timeline-item {
+  display: grid;
+  grid-template-columns: 18px minmax(0, 1fr);
+  column-gap: 12px;
+  min-height: 62px;
+}
+
+.timeline-indicator {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  height: 100%;
+}
+
+.timeline-dot {
+  flex-shrink: 0;
+  width: 11px;
+  height: 11px;
+  margin-top: 3px;
+  border: 2px solid #fff;
+  border-radius: 50%;
+  box-shadow: 0 0 0 2px currentColor;
+}
+
+.timeline-line {
+  flex: 1;
+  width: 2px;
+  min-height: 35px;
+  margin-top: 5px;
+  background: #dbe3ed;
+}
+
+.dot-open {
+  color: #2563eb;
+  background: #2563eb;
+}
+
+.dot-escalated {
+  color: #ea580c;
+  background: #ea580c;
+}
+
+.dot-auto-closed {
+  color: #64748b;
+  background: #64748b;
+}
+
+.dot-resolved {
+  color: #16a34a;
+  background: #16a34a;
+}
+
+.timeline-content {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding-bottom: 18px;
+
+  strong {
+    color: #263449;
+    font-size: 12px;
+    font-weight: 750;
+    letter-spacing: 0.2px;
+  }
+
+  .timeline-time {
+    color: #94a3b8;
+    font-size: 10px;
+  }
+
+  p {
+    color: #64748b;
+    font-size: 11px;
+    line-height: 1.4;
+    overflow-wrap: anywhere;
+  }
+
+  small {
+    color: #94a3b8;
+    font-size: 10px;
+  }
+}
+
+@media (max-width: 600px) {
+  .timeline-item {
+    min-height: 58px;
+  }
+}
+
+/* ========================================
+   SUMMARY CARD ICONS
+======================================== */
+
+.summary-icon {
+  width: 34px;
+  height: 34px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  font-size: 15px;
+  flex-shrink: 0;
+}
+
+.summary-icon.blue {
+  color: #3975d7;
+  background: #edf4ff;
+}
+
+.summary-icon.open {
+  color: #bd851b;
+  background: #fff6df;
+}
+
+.summary-icon.escalated {
+  color: #d65353;
+  background: #fff0ef;
+}
+
+.summary-icon.resolved {
+  color: #269b69;
+  background: #eaf8f0;
+}
+
+
+/* ========================================
+   TABLE STATUS BADGES
+======================================== */
+
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  padding: 6px 10px;
+  border-radius: 7px;
+  font-size: 11px;
+  font-weight: 650;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.status-badge i {
+  font-size: 11px;
+}
+
+/* OPEN - Amber */
+
+.status-badge.open {
+  color: #a87312;
+  background: #fff6df;
+}
+
+/* ESCALATED - Red */
+
+.status-badge.escalated {
+  color: #c34444;
+  background: #fff0ef;
+}
+
+/* RESOLVED - Green */
+
+.status-badge.resolved {
+  color: #218456;
+  background: #eaf8f0;
+}
+
+/* AUTO CLOSED - Grey */
+
+.status-badge.auto-closed {
+  color: #64748b;
+  background: #f1f4f8;
+}
