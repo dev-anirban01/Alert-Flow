@@ -5,16 +5,25 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
 @Component({
   selector: 'app-sidebar',
   standalone: true,
-  imports: [RouterLink, RouterLinkActive],
+  imports: [
+    RouterLink,
+    RouterLinkActive
+  ],
   templateUrl: './sidebar.component.html',
   styleUrl: './sidebar.component.scss'
 })
 export class SidebarComponent {
+  readonly isOpen = input<boolean>(false);
+  readonly isCollapsed = input<boolean>(false);
 
-  // Receives mobile drawer state from parent
-  isOpen = input<boolean>(false);
+  readonly closeSidebar = output<void>();
+  readonly toggleCollapsed = output<void>();
 
-  // Notifies parent when sidebar should close
-  closeSidebar = output<void>();
+  onNavigationClick(): void {
+    this.closeSidebar.emit();
+  }
 
+  onToggleCollapsed(): void {
+    this.toggleCollapsed.emit();
+  }
 }

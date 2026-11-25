@@ -1,8 +1,15 @@
 <div class="main-layout-container">
-  <app-header (menuClick)="isSidebarOpen.set(true)"> </app-header>
+  <app-header (menuClick)="openSidebar()"> </app-header>
 
   <div class="main-layout-body">
-    <app-sidebar [isOpen]="isSidebarOpen()" (closeSidebar)="closeSidebar()"> </app-sidebar>
+    <app-sidebar
+      [isOpen]="isSidebarOpen()"
+      [isCollapsed]="isSidebarCollapsed()"
+      [class.sidebar-collapsed]="isSidebarCollapsed()"
+      (closeSidebar)="closeSidebar()"
+      (toggleCollapsed)="toggleSidebarCollapsed()"
+    >
+    </app-sidebar>
 
     <main class="main-content">
       <router-outlet></router-outlet>

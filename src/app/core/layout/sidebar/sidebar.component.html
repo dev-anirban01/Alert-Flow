@@ -8,10 +8,9 @@
 }
 
 <aside class="sidebar" [class.sidebar-open]="isOpen()" aria-label="Main navigation">
-  <!-- Brand -->
   <div class="sidebar-brand">
     <div class="brand-icon">
-      <i class="fa-solid fa-bell" aria-hidden="true"></i>
+      <i class="fa-solid fa-bell"></i>
     </div>
 
     <div class="brand-info">
@@ -20,65 +19,96 @@
     </div>
 
     <button
+      class="collapse-button"
+      type="button"
+      (click)="onToggleCollapsed()"
+      [attr.aria-label]="isCollapsed() ? 'Expand sidebar' : 'Collapse sidebar'"
+      [attr.title]="isCollapsed() ? 'Expand sidebar' : 'Collapse sidebar'"
+    >
+      <i
+        class="fa-solid"
+        [class.fa-angles-left]="!isCollapsed()"
+        [class.fa-angles-right]="isCollapsed()"
+      >
+      </i>
+    </button>
+
+    <button
       class="mobile-close"
       type="button"
-      aria-label="Close menu"
+      aria-label="Close navigation"
       (click)="closeSidebar.emit()"
     >
-      <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+      <i class="fa-solid fa-xmark"></i>
     </button>
   </div>
 
   <div class="brand-divider"></div>
 
-  <!-- Navigation -->
   <nav class="sidebar-navigation">
-    <span class="nav-section-label">WORKSPACE</span>
+    <div class="nav-section">
+      <span class="nav-section-label">WORKSPACE</span>
 
-    <a
-      routerLink="/dashboard"
-      routerLinkActive="active"
-      [routerLinkActiveOptions]="{ exact: true }"
-      class="nav-item"
-      (click)="closeSidebar.emit()"
-    >
-      <i class="fa-solid fa-house nav-icon" aria-hidden="true"></i>
-      <span>Dashboard</span>
-    </a>
+      <a
+        class="nav-item"
+        routerLink="/dashboard"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
+        (click)="onNavigationClick()"
+      >
+        <span class="nav-icon">
+          <i class="fa-solid fa-house"></i>
+        </span>
 
-    <a
-      routerLink="/alerts"
-      routerLinkActive="active"
-      class="nav-item"
-      (click)="closeSidebar.emit()"
-    >
-      <i class="fa-solid fa-bell nav-icon" aria-hidden="true"></i>
-      <span>Alert Console</span>
-      <span class="nav-count">60</span>
-    </a>
+        <span class="nav-label">Dashboard</span>
+      </a>
+
+      <a
+        class="nav-item"
+        routerLink="/alerts"
+        routerLinkActive="active"
+        (click)="onNavigationClick()"
+      >
+        <span class="nav-icon">
+          <i class="fa-solid fa-bell"></i>
+        </span>
+
+        <span class="nav-label">Alert Console</span>
+
+        <span class="nav-count">12</span>
+      </a>
+    </div>
 
     <div class="nav-divider"></div>
 
-    <span class="nav-section-label">PREFERENCES</span>
+    <div class="nav-section">
+      <span class="nav-section-label">PREFERENCES</span>
 
-    <a
-      routerLink="/settings"
-      routerLinkActive="active"
-      class="nav-item"
-      (click)="closeSidebar.emit()"
-    >
-      <i class="fa-solid fa-gear nav-icon" aria-hidden="true"></i>
-      <span>Settings</span>
-    </a>
+      <a
+        class="nav-item"
+        routerLink="/settings"
+        routerLinkActive="active"
+        (click)="onNavigationClick()"
+      >
+        <span class="nav-icon">
+          <i class="fa-solid fa-gear"></i>
+        </span>
+
+        <span class="nav-label">Settings</span>
+      </a>
+    </div>
   </nav>
 
-  <!-- User Profile -->
   <div class="sidebar-footer">
     <div class="profile-avatar">AR</div>
 
     <div class="profile-info">
-      <h4>Admin User</h4>
-      <span>Administrator</span>
+      <span class="profile-name">Admin User</span>
+      <span class="profile-role">Administrator</span>
     </div>
+
+    <button class="profile-menu" type="button" aria-label="Profile options" title="Profile options">
+      <i class="fa-solid fa-ellipsis"></i>
+    </button>
   </div>
 </aside>
